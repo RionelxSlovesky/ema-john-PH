@@ -6,12 +6,13 @@ import { Link } from 'react-router-dom';
 const Header = () => {
     return (
         <nav className='header'>
-            <img src={logo} alt="" />
+            <Link to='/'><img src={logo} alt="" /></Link>
             <div>
                 <Link to="/">Shop</Link>
                 <Link to="/orders">Orders</Link>
                 <Link to="/inventory">Inventory</Link>
                 <Link to="/login">Login</Link>
+                <Link to="/signup">SignUp</Link>
             </div>
         </nav>
     );
