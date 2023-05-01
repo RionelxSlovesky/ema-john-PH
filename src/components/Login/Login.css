@@ -50,3 +50,7 @@
 .btn-submit {
     background-color: rgb(245, 215, 141);
 }
+
+.error-msg {
+    color: red;
+}
