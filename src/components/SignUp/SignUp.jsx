@@ -9,6 +9,7 @@ const SignUp = () => {
 
     const auth = getAuth(app)
     const [error, setError] = useState('')
+    const [show, setShow] = useState(false)
 
     const {user, createUser} = useContext(AuthContext)
 
@@ -47,9 +48,12 @@ const SignUp = () => {
                     <label htmlFor="email">Email</label>
                     <input type="email" name='email' required />
                     <label htmlFor="password">Password</label>
-                    <input type="password" name='password' required />
+                    <input type={show ? "text" : "password"} name='password' required />
                     <label htmlFor="password">Confirm Password</label>
                     <input type="password" name='confirm' required />
+                    <p style={{cursor:'pointer'}} onClick={() => setShow(!show)}>{
+                        show ? <small>Hide Password</small>:<small>Show Password</small>
+                    }</p>
                     <input className='btn-submit' type="submit" value='Sign Up' />
                     <p><small>Already have an account? <Link to='/login'>Login</Link></small></p>
                     <p className='error-msg'>{error}</p>
