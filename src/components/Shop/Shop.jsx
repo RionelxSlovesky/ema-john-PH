@@ -12,9 +12,11 @@ import { Link, useLoaderData } from "react-router-dom";
 const Shop = () => {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1)
+  const [productsPerPage, setProductsPerPage] = useState(10)
+  const options = [5,10,15]
 
   const { totalProducts } = useLoaderData();
-  const productsPerPage = 10; //TODO: make it dynamic
   const totalPages = Math.ceil(totalProducts / productsPerPage);
   const pageNumbers = [...Array(totalPages).keys()].map((x) => x + 1);
 
@@ -97,9 +99,20 @@ const Shop = () => {
       </div>
       {/* {pagination} */}
       <div className="pagination">
+            <p>Current Page: {currentPage}</p>
         {
-            pageNumbers.map(number => <button>{number}</button>)
+            pageNumbers.map(number => <button key={number} onClick={() => setCurrentPage(number)} className={currentPage==number ? 'selected' : ''}>{number}</button>)
         }
+        <br />
+        <select defaultValue={productsPerPage} onChange={(event) => setProductsPerPage(event.target.value)}>
+            {
+                options.map(option => (
+                    <option key={option} value={option}>
+                        {option}
+                    </option>
+                ))
+            }
+        </select>
       </div>
     </>
   );
