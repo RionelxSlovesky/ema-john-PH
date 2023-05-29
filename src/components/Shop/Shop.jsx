@@ -12,9 +12,9 @@ import { Link, useLoaderData } from "react-router-dom";
 const Shop = () => {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1)
-  const [productsPerPage, setProductsPerPage] = useState(10)
-  const options = [5,10,15]
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productsPerPage, setProductsPerPage] = useState(10);
+  const options = [5, 10, 15];
 
   const { totalProducts } = useLoaderData();
   const totalPages = Math.ceil(totalProducts / productsPerPage);
@@ -24,13 +24,25 @@ const Shop = () => {
    * 1) Determine the total number of items (totalProducts)
    * 2) Decide on the number of items per page (productsPerPage)
    * 3) Calculate total pages required (totalPages)
+   * 4) Determined the current page
    */
 
+  //   useEffect(() => {
+  //     fetch("http://localhost:5000/products")
+  //       .then((res) => res.json())
+  //       .then((data) => setProducts(data));
+  //   }, []);
+
   useEffect(() => {
-    fetch("http://localhost:5000/products")
-      .then((res) => res.json())
-      .then((data) => setProducts(data));
-  }, []);
+    async function fetchData() {
+      const response = await fetch(
+        `http://localhost:5000/products?page=${currentPage}&limit=${productsPerPage}`
+      );
+      const data = await response.json();
+      setProducts(data);
+    }
+    fetchData();
+  }, [currentPage, productsPerPage]);
 
   useEffect(() => {
     const storedCart = getShoppingCart();
@@ -99,19 +111,26 @@ const Shop = () => {
       </div>
       {/* {pagination} */}
       <div className="pagination">
-            <p>Current Page: {currentPage}</p>
-        {
-            pageNumbers.map(number => <button key={number} onClick={() => setCurrentPage(number)} className={currentPage==number ? 'selected' : ''}>{number}</button>)
-        }
+        <p>Current Page: {currentPage}</p>
+        {pageNumbers.map((number) => (
+          <button
+            key={number}
+            onClick={() => setCurrentPage(number)}
+            className={currentPage == number ? "selected" : ""}
+          >
+            {number}
+          </button>
+        ))}
         <br />
-        <select defaultValue={productsPerPage} onChange={(event) => setProductsPerPage(event.target.value)}>
-            {
-                options.map(option => (
-                    <option key={option} value={option}>
-                        {option}
-                    </option>
-                ))
-            }
+        <select
+          defaultValue={productsPerPage}
+          onChange={(event) => setProductsPerPage(event.target.value)}
+        >
+          {options.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
         </select>
       </div>
     </>
